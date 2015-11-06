@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-private xmlns="http://www.netbeans.org/ns/project-private/1">
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
+    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
+        <group>
+            <file>file:/D:/Netbeans8.0.2/DirectMessageBot/src/com/directmessagebot/dao/AccountManagerDao.java</file>
+            <file>file:/D:/Netbeans8.0.2/DirectMessageBot/src/com/directmessagebot/thread/GetAllAccountsThread.java</file>
+            <file>file:/D:/Netbeans8.0.2/DirectMessageBot/src/com/directmessagebot/crawler/Login.java</file>
+            <file>file:/D:/Netbeans8.0.2/DirectMessageBot/src/com/directmessagebot/ui/MainPage.java</file>
+            <file>file:/D:/Netbeans8.0.2/DirectMessageBot/src/com/directmessagebot/ui/DirectMessagePage.java</file>
+            <file>file:/D:/Netbeans8.0.2/DirectMessageBot/src/com/directmessagebot/thread/LoadAccountThread.java</file>
+            <file>file:/D:/Netbeans8.0.2/DirectMessageBot/src/com/directmessagebot/thread/AccountLoginThread.java</file>
+            <file>file:/D:/Netbeans8.0.2/DirectMessageBot/src/com/directmessagebot/crawler/InstagramCrawler.java</file>
+            <file>file:/D:/Netbeans8.0.2/DirectMessageBot/src/com/directmessagebot/dao/AccountManagerDaoImpl.java</file>
+        </group>
+    </open-files>
+</project-private>
