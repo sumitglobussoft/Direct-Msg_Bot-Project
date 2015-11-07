@@ -30,7 +30,7 @@ public class Login {
         long messageSent = 0;
         String messageRecepient = "harshali__malhotra";
         String message = "now check";
-        int loggedInStatus = objLogin.LoginbyInconosquare("himanshumoriglobus", "globussoft");
+        int loggedInStatus = objLogin.LoginbyInconosquare("elliedavey", "LKJMNBHJ24");//susannahdocherty:qwerty123456789
         if (loggedInStatus == 1) {
             messageSent = objLogin.sendMessagebyInconosquare(messageRecepient, message);
         }
@@ -78,9 +78,9 @@ public class Login {
                 objPostFetchSource.lstCookie.add(cookie2);
             }
 
-            String resFirst = objPostFetchSource.getSourceWithProxy("http://iconosquare.com", "", "iconosquare.com");
+            String resFirst = objPostFetchSource.fetchPageSourceWithoutProxyGET("http://iconosquare.com", "", "iconosquare.com");
 
-            String csfrResponse = objPostFetchSource.getSourceWithProxy("https://instagram.com/accounts/login/?force_classic_login=&next=/oauth/authorize%3Fclient_id%3Dd9494686198d4dfeb954979a3e270e5e%26redirect_uri%3Dhttp%253A%252F%252Ficonosquare.com%26response_type%3Dcode%26scope%3Dlikes%2Bcomments%2Brelationships", "http://iconosquare.com/", "instagram.com");
+            String csfrResponse = objPostFetchSource.fetchPageSourceWithoutProxyGET("https://instagram.com/accounts/login/?force_classic_login=&next=/oauth/authorize%3Fclient_id%3Dd9494686198d4dfeb954979a3e270e5e%26redirect_uri%3Dhttp%253A%252F%252Ficonosquare.com%26response_type%3Dcode%26scope%3Dlikes%2Bcomments%2Brelationships", "http://iconosquare.com/", "instagram.com");
 
             for (Cookie CookieDataSplited1 : objPostFetchSource.lstCookie) {
                 if (CookieDataSplited1.getName().equals("csrftoken")) {
@@ -92,18 +92,18 @@ public class Login {
             }
             String host = "instagram.com";
             String referer = "https://instagram.com/accounts/login/?force_classic_login=&next=/oauth/authorize%3Fclient_id%3Dd9494686198d4dfeb954979a3e270e5e%26redirect_uri%3Dhttp%253A%252F%252Ficonosquare.com%26response_type%3Dcode%26scope%3Dlikes%2Bcomments%2Brelationships";
-            String postloginResponseCode = objPostFetchSource.fetchPageSourceWithProxyPost(firstUrl, postdata, referer, host);
+            String postloginResponseCode = objPostFetchSource.fetchPageSourceWithoutProxyPOST(firstUrl, postdata, referer, host);
             System.out.println("--------------------Post Login Response Code--------------------" + postloginResponseCode);
             String response2 = null;
             if (postloginResponseCode.contains("redirect Url :")) {
                 String Url = postloginResponseCode.replace("redirect Url :", "");
                 String Referer = "https://instagram.com/accounts/login/?force_classic_login=&next=/oauth/authorize%3Fclient_id%3Dd9494686198d4dfeb954979a3e270e5e%26redirect_uri%3Dhttp%253A%252F%252Ficonosquare.com%26response_type%3Dcode%26scope%3Dlikes%2Bcomments%2Brelationships";
                 try {
-                    response2 = objPostFetchSource.getSourceWithProxy(Url, "https://instagram.com/accounts/login/?force_classic_login=&next=/oauth/authorize%3Fclient_id%3Dd9494686198d4dfeb954979a3e270e5e%26redirect_uri%3Dhttp%253A%252F%252Ficonosquare.com%26response_type%3Dcode%26scope%3Dlikes%2Bcomments%2Brelationships", "instagram.com");
+                    response2 = objPostFetchSource.fetchPageSourceWithoutProxyGET(Url, "https://instagram.com/accounts/login/?force_classic_login=&next=/oauth/authorize%3Fclient_id%3Dd9494686198d4dfeb954979a3e270e5e%26redirect_uri%3Dhttp%253A%252F%252Ficonosquare.com%26response_type%3Dcode%26scope%3Dlikes%2Bcomments%2Brelationships", "instagram.com");
                 } catch (Exception e1312) {
                     String viewerResponse;
                     System.out.println("Final URL");
-                    viewerResponse = objPostFetchSource.getSourceWithProxy("http://iconosquare.com/viewer.php", "", "iconosquare.com");
+                    viewerResponse = objPostFetchSource.fetchPageSourceWithoutProxyGET("http://iconosquare.com/viewer.php", "", "iconosquare.com");
 //                System.out.println("response of viewer ::\n" + viewerResponse);
                     if ((viewerResponse != null) && (viewerResponse.length() > 0)) {
                         loggedInStatus = 1;
@@ -120,10 +120,10 @@ public class Login {
         long messageSent = 0;
         try {
             String commentResponse;
-            commentResponse = objPostFetchSource.getSourceWithProxy("http://iconosquare.com/comments.php", "http://iconosquare.com/viewer.php", "iconosquare.com");
+            commentResponse = objPostFetchSource.fetchPageSourceWithoutProxyGET("http://iconosquare.com/comments.php", "http://iconosquare.com/viewer.php", "iconosquare.com");
             if ((commentResponse != null) && (commentResponse.length() > 0)) {
                 String messageResponse;
-                messageResponse = objPostFetchSource.getSourceWithProxy("http://iconosquare.com/messages.php", "http://iconosquare.com/comments.php", "iconosquare.com");
+                messageResponse = objPostFetchSource.fetchPageSourceWithoutProxyGET("http://iconosquare.com/messages.php", "http://iconosquare.com/comments.php", "iconosquare.com");
 //
 //                Document doc = Jsoup.parse(messageResponse);
 //                Elements e = doc.select("input[id=user_id]");
@@ -133,14 +133,14 @@ public class Login {
 
                 if ((messageResponse != null) && (messageResponse.length() > 0)) {
                     String newMessageResponse;
-                    newMessageResponse = objPostFetchSource.getSourceWithProxy("http://iconosquare.com/message_post_autocomplete.php", "http://iconosquare.com/messages.php", "iconosquare.com");
+                    newMessageResponse = objPostFetchSource.fetchPageSourceWithoutProxyGET("http://iconosquare.com/message_post_autocomplete.php", "http://iconosquare.com/messages.php", "iconosquare.com");
                     if ((newMessageResponse != null) && (newMessageResponse.length() > 0)) {
                         String sendMessageResponse;
                         String url = "http://iconosquare.com/controller_ajax.php";
                         String referer = "http://iconosquare.com/messages.php";
                         String postdata = "action=save-dm&username=" + username + "&message=" + message;
                         String host = "iconosquare.com";
-                        sendMessageResponse = objPostFetchSource.fetchPageSourceWithProxyPost(url, postdata, referer, host);
+                        sendMessageResponse = objPostFetchSource.fetchPageSourceWithoutProxyPOST(url, postdata, referer, host);
                         System.out.println("ContentLength::::\n" + sendMessageResponse);
                         if (sendMessageResponse.equals("1")) {
                             messageSent = 1;
@@ -158,7 +158,7 @@ public class Login {
         long followUserSendMessageUnfollow = 0;
         try {
             String accessToken = "";
-            String viewResponseForToken = objPostFetchSource.getSourceWithProxy("http://iconosquare.com/viewer.php", "http://iconosquare.com/messages.php", "iconosquare.com");
+            String viewResponseForToken = objPostFetchSource.fetchPageSourceWithoutProxyGET("http://iconosquare.com/viewer.php", "http://iconosquare.com/messages.php", "iconosquare.com");
 //            System.out.println("viewResponseForToken:::"+viewResponseForToken);
 
             Document doc = Jsoup.parse(viewResponseForToken);
@@ -168,7 +168,7 @@ public class Login {
             if (accessToken.length() > 0) {
                 String userID = "";
                 String searchurl = "http://iconosquare.com/rqig.php?e=/users/search&a=ico2&t=" + accessToken + "&q=" + username;
-                String jsonResponse = objPostFetchSource.getSourceWithProxy(searchurl, "http://iconosquare.com/viewer.php", "iconosquare.com");
+                String jsonResponse = objPostFetchSource.fetchPageSourceWithoutProxyGET(searchurl, "http://iconosquare.com/viewer.php", "iconosquare.com");
 
                 JSONObject a = new JSONObject(jsonResponse);
                 System.out.println("aaaa:::" + a);
@@ -187,7 +187,7 @@ public class Login {
 
                     String followurl = "http://iconosquare.com/controller_ajax.php";
                     String postData = "action=relationship&user_id=" + userID + "&relation=follow";
-                    String followResponse = objPostFetchSource.fetchPageSourceWithProxyPost(followurl, postData, "http://iconosquare.com/viewer.php", "iconosquare.com");
+                    String followResponse = objPostFetchSource.fetchPageSourceWithoutProxyPOST(followurl, postData, "http://iconosquare.com/viewer.php", "iconosquare.com");
                     System.out.println("followResponse" + followResponse);
 
                     if (followResponse.equals("1")) {
@@ -207,7 +207,7 @@ public class Login {
                             //Unfollow the user
                             String unfollowurl = "http://iconosquare.com/controller_ajax.php";
                             String unfollowPostData = "action=relationship&user_id=" + userID + "&relation=unfollow";
-                            String unfollowResponse = objPostFetchSource.fetchPageSourceWithProxyPost(unfollowurl, unfollowPostData, "http://iconosquare.com/viewer.php", "iconosquare.com");
+                            String unfollowResponse = objPostFetchSource.fetchPageSourceWithoutProxyPOST(unfollowurl, unfollowPostData, "http://iconosquare.com/viewer.php", "iconosquare.com");
                             System.out.println("unfollowResponse" + unfollowResponse);
                             if (followResponse.equals("1")) {
                         System.out.println("Successfully un following the user");}

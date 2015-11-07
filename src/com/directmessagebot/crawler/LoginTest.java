@@ -17,7 +17,7 @@ import org.jsoup.select.Elements;
 
 /**
  *
- * @author GLB-130
+ * @author Ashwini Mendon
  */
 public class LoginTest {
 

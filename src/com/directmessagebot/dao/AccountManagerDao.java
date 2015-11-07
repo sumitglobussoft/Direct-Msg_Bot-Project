@@ -24,13 +24,6 @@ public interface AccountManagerDao {
     */
    public void setDataSource(DataSource ds);
    /** 
-    * This is the method to be used to create
-    * a record in the Student table.
-     * @param name
-     * @param age
-    */
-   public void create(String name, Integer age);
-   /** 
     * This is the method to be used to list down
     * a record from the Student table corresponding
     * to a passed student id.
@@ -50,15 +43,7 @@ public interface AccountManagerDao {
     * to a passed student id.
      * @param id
     */
-   public void delete(Integer id);
-   /** 
-    * This is the method to be used to update
-    * a record into the Student table.
-     * @param id
-     * @param age
-    */
-   public void update(Integer id, Integer age);
-   
+   public void delete(Integer id);   
    
    public int insertAccountManager(AccountManager objLaunchData);
    
@@ -68,8 +53,6 @@ public interface AccountManagerDao {
    public void insertBatch(final List<AccountManager> listAccountManager);
    
    public int deleteAll();
-   
-   public List<AccountManager> listAccountManager(Date selectedDate);
    
    
    public void createTable();

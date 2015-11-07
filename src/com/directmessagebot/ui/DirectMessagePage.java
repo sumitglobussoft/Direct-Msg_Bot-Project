@@ -6,9 +6,7 @@
 package com.directmessagebot.ui;
 
 import com.directmessagebot.dao.AccountManagerDao;
-import com.directmessagebot.dao.AccountManagerDaoImpl;
 import com.directmessagebot.form.UsernameMessageForm;
-import com.directmessagebot.thread.LoadAccountThread;
 import com.directmessagebot.thread.GetAllAccountsThread;
 import java.io.BufferedReader;
 import java.io.File;
@@ -21,10 +19,7 @@ import java.util.concurrent.Executors;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
-import javax.swing.JFrame;
 import javax.swing.filechooser.FileSystemView;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /**
  *
@@ -234,6 +229,10 @@ public class DirectMessagePage extends javax.swing.JFrame {
     private void StarrButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_StarrButtonActionPerformed
         // TODO add your handling code here:
         if((usernameTextField.getText().trim().length()>0)&&(messageTextArea.getText().trim().length()>0)){
+            StarrButton.setEnabled(false);
+            importButton.setEnabled(false);
+            usernameTextField.setEnabled(false);
+            messageTextArea.setEnabled(false);
             listUsernameMessageForm.clear();
             UsernameMessageForm objUsernameMessageForm = new UsernameMessageForm();
             objUsernameMessageForm.setUsername(usernameTextField.getText().trim());
@@ -251,6 +250,10 @@ public class DirectMessagePage extends javax.swing.JFrame {
 
         }
         else if(listUsernameMessageForm.size()>0){
+            StarrButton.setEnabled(false);
+            importButton.setEnabled(false);
+            usernameTextField.setEnabled(false);
+            messageTextArea.setEnabled(false);
              ExecutorService executor = Executors.newFixedThreadPool(1);
                 Callable worker = new GetAllAccountsThread(listUsernameMessageForm, objAccountManagerDao);
 
@@ -384,18 +387,18 @@ public class DirectMessagePage extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel DIRECTMESSAGEBOTLabel;
-    private javax.swing.JButton StarrButton;
+    public static javax.swing.JButton StarrButton;
     private java.awt.Button button1;
-    private javax.swing.JButton importButton;
+    public static javax.swing.JButton importButton;
     private javax.swing.JLabel importLabel;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     public static java.awt.TextArea logger2textArea;
     private javax.swing.JLabel loggerLabel;
     private javax.swing.JLabel messageLabel;
-    private java.awt.TextArea messageTextArea;
+    public static java.awt.TextArea messageTextArea;
     private javax.swing.JLabel orLabel;
     private javax.swing.JLabel usernameLabel;
-    private javax.swing.JTextField usernameTextField;
+    public static javax.swing.JTextField usernameTextField;
     // End of variables declaration//GEN-END:variables
 }

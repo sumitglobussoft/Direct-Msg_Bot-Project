@@ -8,8 +8,6 @@ package com.directmessagebot.dao;
 import com.directmessagebot.entity.AccountManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 import javax.sql.DataSource;
 import org.springframework.dao.DataAccessException;
@@ -34,21 +32,14 @@ public class AccountManagerDaoImpl implements AccountManagerDao {
         this.jdbcTemplateObject = new JdbcTemplate(dataSource);
     }
 
-    @Override
-    public void create(String site, Integer age) {
-        String SQL = "insert into launch_data (site, product) values (?, ?)";
 
-        jdbcTemplateObject.update(SQL, site, "testing");
-        System.out.println("Created Record Name = " + site + " Age = " + age);
-
-    }
 
     @Override
     public AccountManager getAccountManager(Integer id) {
-        String SQL = "select * from launch_data where id = ?";
-        AccountManager student = (AccountManager) jdbcTemplateObject.queryForObject(SQL,
+        String SQL = "select * from account_manager where id = ?";
+        AccountManager accountManager = (AccountManager) jdbcTemplateObject.queryForObject(SQL,
                 new Object[]{id}, new BeanPropertyRowMapper(AccountManager.class));
-        return student;
+        return accountManager;
     }
 
     @Override
@@ -65,17 +56,9 @@ public class AccountManagerDaoImpl implements AccountManagerDao {
 
     @Override
     public void delete(Integer id) {
-        String SQL = "delete from Student where id = ?";
+        String SQL = "delete from account_manager where id = ?";
         jdbcTemplateObject.update(SQL, id);
         System.out.println("Deleted Record with ID = " + id);
-        return;
-    }
-
-    @Override
-    public void update(Integer id, Integer age) {
-        String SQL = "update Student set age = ? where id = ?";
-        jdbcTemplateObject.update(SQL, age, id);
-        System.out.println("Updated Record with ID = " + id);
         return;
     }
 
@@ -128,15 +111,6 @@ public void insertBatch(final List<AccountManager> listAccountManager){
         String SQL = "delete from account_manager";
         int val = jdbcTemplateObject.update(SQL);
         return val;
-    }
-
-    @Override
-    public List<AccountManager> listAccountManager(Date selectedDate) {
-        String launchDate = new SimpleDateFormat("yyyy-MM-dd").format(selectedDate);
-        String SQL = "select * from launch_data where LAUNCH_DATE = ?";
-        List<AccountManager> listLaunchData = jdbcTemplateObject.query(SQL, new Object[]{launchDate},
-                new BeanPropertyRowMapper(AccountManager.class));
-        return listLaunchData;
     }
 
     @Override

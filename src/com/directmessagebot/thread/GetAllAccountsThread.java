@@ -8,7 +8,11 @@ package com.directmessagebot.thread;
 import com.directmessagebot.dao.AccountManagerDao;
 import com.directmessagebot.entity.AccountManager;
 import com.directmessagebot.form.UsernameMessageForm;
+import static com.directmessagebot.ui.DirectMessagePage.StarrButton;
+import static com.directmessagebot.ui.DirectMessagePage.importButton;
 import static com.directmessagebot.ui.DirectMessagePage.logger2textArea;
+import static com.directmessagebot.ui.DirectMessagePage.messageTextArea;
+import static com.directmessagebot.ui.DirectMessagePage.usernameTextField;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -54,22 +58,27 @@ public class GetAllAccountsThread implements Callable<String> {
                 }
 
             }
-            for (Future<String> fut : list) {
-                try {
-                    //print the return value of Future, notice the output delay in console
-                    // because Future.get() waits for task to get completed
-                    System.out.println(new Date() + "::" + fut.get());
-                } catch (InterruptedException | ExecutionException ep) {
-                    ep.printStackTrace();
-                }
-            }
-            //shut down the executor service now
-            executor.shutdown();
-            
-            logger2textArea.append("\nDone Sending message to the selected Uers");
-
-            ////
         }
+        for (Future<String> fut : list) {
+            try {
+                    //print the return value of Future, notice the output delay in console
+                // because Future.get() waits for task to get completed
+                System.out.println(new Date() + "::" + fut.get());
+            } catch (InterruptedException | ExecutionException ep) {
+                ep.printStackTrace();
+            }
+        }
+        //shut down the executor service now
+        executor.shutdown();
+
+        logger2textArea.append("\n\n==========================================");
+        logger2textArea.append("\nDone Sending message to the selected Uers\n");
+        usernameTextField.setText("");
+            messageTextArea.setText("");
+        StarrButton.setEnabled(true);
+            importButton.setEnabled(true);
+            usernameTextField.setEnabled(true);
+            messageTextArea.setEnabled(true);
         return "done";
 
     }

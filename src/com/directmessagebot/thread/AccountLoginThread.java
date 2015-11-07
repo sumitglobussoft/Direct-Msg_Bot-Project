@@ -38,16 +38,18 @@ public class AccountLoginThread implements Callable<String> {
         int loggedInStatus = objInstagramCrawler.LoginbyInconosquare(objAccountManager);
         //Each message will go for selected user
         for (UsernameMessageForm usernameMessage : listUsernameMessageForm) {
+            
+            Thread.sleep(40000);
 
             if (loggedInStatus == 1) {
-                messageSent = objInstagramCrawler.sendMessagebyInconosquare(usernameMessage.getUsername(), usernameMessage.getMessage());
+                messageSent = objInstagramCrawler.sendMessagebyInconosquare(usernameMessage.getUsername(), usernameMessage.getMessage(), objAccountManager);
             }
             if (messageSent == 1) {
                 System.out.println("Message Sent");
             } else {
                 System.out.println("userID" + messageSent);
                 System.out.println("Message Not sent");
-                objInstagramCrawler.followUserSendMessageUnfollowbyInconosquare(usernameMessage.getUsername(), usernameMessage.getMessage());
+                objInstagramCrawler.followUserSendMessageUnfollowbyInconosquare(usernameMessage.getUsername(), usernameMessage.getMessage(), objAccountManager);
             }
         }
 

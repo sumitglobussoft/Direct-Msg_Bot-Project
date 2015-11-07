@@ -20,11 +20,19 @@ import org.jsoup.select.Elements;
 
 /**
  *
- * @author GLB-130
+ * @author Ashwini Mendon
  */
 public class InstagramCrawler {
+
     PostFetchSource objPostFetchSource = new PostFetchSource();
+
+    public InstagramCrawler() {
+        
+         System.out.println("Created InstagramCrawler object");
+    }
     
+    
+
     public int LoginbyInconosquare(AccountManager objAccountManager) throws URISyntaxException, IOException, InterruptedException, Exception {
 
         String username = objAccountManager.getUsername();
@@ -36,7 +44,7 @@ public class InstagramCrawler {
             String firstUrl = "https://instagram.com/accounts/login/?force_classic_login=&next=/oauth/authorize%3Fclient_id%3Dd9494686198d4dfeb954979a3e270e5e%26redirect_uri%3Dhttp%253A%252F%252Ficonosquare.com%26response_type%3Dcode%26scope%3Dlikes%2Bcomments%2Brelationships";
 
             String postdata = "";
-            
+
             String CookieData = " mid=VjdGcAAEAAHz3mXzj_xf6uvhoQE8";
 
             String[] CookieDataSplited = CookieData.split(";");
@@ -52,10 +60,18 @@ public class InstagramCrawler {
                 objPostFetchSource.lstCookie.add(cookie2);
             }
 
-            
-            String resFirst = objPostFetchSource.getSourceWithProxy("http://iconosquare.com", "", "iconosquare.com");
+            System.out.println("objAccountManager.getProxyIp()" + objAccountManager.getProxyIp());
+            System.out.println("objAccountManager.getProxyIp()" + objAccountManager.getProxyIp());
+            if (objAccountManager.getProxyIp().trim().length() > 0) {
+                System.out.println("=========With proxy");
+                String resFirst = objPostFetchSource.fetchPageSourceWithProxyGET("http://iconosquare.com", "", "iconosquare.com", objAccountManager.getProxyIp(), objAccountManager.getProxyPort(), objAccountManager.getProxyUsername(), objAccountManager.getProxyPassword());
 
-            String csfrResponse = objPostFetchSource.getSourceWithProxy("https://instagram.com/accounts/login/?force_classic_login=&next=/oauth/authorize%3Fclient_id%3Dd9494686198d4dfeb954979a3e270e5e%26redirect_uri%3Dhttp%253A%252F%252Ficonosquare.com%26response_type%3Dcode%26scope%3Dlikes%2Bcomments%2Brelationships", "http://iconosquare.com/", "instagram.com");
+                String csfrResponse = objPostFetchSource.fetchPageSourceWithProxyGET("https://instagram.com/accounts/login/?force_classic_login=&next=/oauth/authorize%3Fclient_id%3Dd9494686198d4dfeb954979a3e270e5e%26redirect_uri%3Dhttp%253A%252F%252Ficonosquare.com%26response_type%3Dcode%26scope%3Dlikes%2Bcomments%2Brelationships", "http://iconosquare.com/", "instagram.com", objAccountManager.getProxyIp(), objAccountManager.getProxyPort(), objAccountManager.getProxyUsername(), objAccountManager.getProxyPassword());
+            } else {
+                String resFirst = objPostFetchSource.fetchPageSourceWithoutProxyGET("http://iconosquare.com", "", "iconosquare.com");
+
+                String csfrResponse = objPostFetchSource.fetchPageSourceWithoutProxyGET("https://instagram.com/accounts/login/?force_classic_login=&next=/oauth/authorize%3Fclient_id%3Dd9494686198d4dfeb954979a3e270e5e%26redirect_uri%3Dhttp%253A%252F%252Ficonosquare.com%26response_type%3Dcode%26scope%3Dlikes%2Bcomments%2Brelationships", "http://iconosquare.com/", "instagram.com");
+            }
 
             for (Cookie CookieDataSplited1 : objPostFetchSource.lstCookie) {
                 if (CookieDataSplited1.getName().equals("csrftoken")) {
@@ -67,22 +83,35 @@ public class InstagramCrawler {
             }
             String host = "instagram.com";
             String referer = "https://instagram.com/accounts/login/?force_classic_login=&next=/oauth/authorize%3Fclient_id%3Dd9494686198d4dfeb954979a3e270e5e%26redirect_uri%3Dhttp%253A%252F%252Ficonosquare.com%26response_type%3Dcode%26scope%3Dlikes%2Bcomments%2Brelationships";
-            String postloginResponseCode = objPostFetchSource.fetchPageSourceWithProxyPost(firstUrl, postdata, referer, host);
+            String postloginResponseCode = null;
+            if (objAccountManager.getProxyIp().trim().length() > 0) {
+                postloginResponseCode = objPostFetchSource.fetchPageSourceWithProxyPOST(firstUrl, postdata, referer, host, objAccountManager.getProxyIp(), objAccountManager.getProxyPort(), objAccountManager.getProxyUsername(), objAccountManager.getProxyPassword());
+            } else {
+                postloginResponseCode = objPostFetchSource.fetchPageSourceWithoutProxyPOST(firstUrl, postdata, referer, host);
+            }
             System.out.println("--------------------Post Login Response Code--------------------" + postloginResponseCode);
             String response2 = null;
             if (postloginResponseCode.contains("redirect Url :")) {
                 String Url = postloginResponseCode.replace("redirect Url :", "");
                 String Referer = "https://instagram.com/accounts/login/?force_classic_login=&next=/oauth/authorize%3Fclient_id%3Dd9494686198d4dfeb954979a3e270e5e%26redirect_uri%3Dhttp%253A%252F%252Ficonosquare.com%26response_type%3Dcode%26scope%3Dlikes%2Bcomments%2Brelationships";
                 try {
-                    response2 = objPostFetchSource.getSourceWithProxy(Url, "https://instagram.com/accounts/login/?force_classic_login=&next=/oauth/authorize%3Fclient_id%3Dd9494686198d4dfeb954979a3e270e5e%26redirect_uri%3Dhttp%253A%252F%252Ficonosquare.com%26response_type%3Dcode%26scope%3Dlikes%2Bcomments%2Brelationships", "instagram.com");
+                    if (objAccountManager.getProxyIp().trim().length() > 0) {
+                        response2 = objPostFetchSource.fetchPageSourceWithProxyGET(Url, "https://instagram.com/accounts/login/?force_classic_login=&next=/oauth/authorize%3Fclient_id%3Dd9494686198d4dfeb954979a3e270e5e%26redirect_uri%3Dhttp%253A%252F%252Ficonosquare.com%26response_type%3Dcode%26scope%3Dlikes%2Bcomments%2Brelationships", "instagram.com", objAccountManager.getProxyIp(), objAccountManager.getProxyPort(), objAccountManager.getProxyUsername(), objAccountManager.getProxyPassword());
+                    } else {
+                        response2 = objPostFetchSource.fetchPageSourceWithoutProxyGET(Url, "https://instagram.com/accounts/login/?force_classic_login=&next=/oauth/authorize%3Fclient_id%3Dd9494686198d4dfeb954979a3e270e5e%26redirect_uri%3Dhttp%253A%252F%252Ficonosquare.com%26response_type%3Dcode%26scope%3Dlikes%2Bcomments%2Brelationships", "instagram.com");
+                    }
                 } catch (Exception e1312) {
-                    String viewerResponse;
+                    String viewerResponse = null;
                     System.out.println("Final URL");
-                    viewerResponse = objPostFetchSource.getSourceWithProxy("http://iconosquare.com/viewer.php", "", "iconosquare.com");
+                    if (objAccountManager.getProxyIp().trim().length() > 0) {
+                        viewerResponse = objPostFetchSource.fetchPageSourceWithProxyGET("http://iconosquare.com/viewer.php", "", "iconosquare.com", objAccountManager.getProxyIp(), objAccountManager.getProxyPort(), objAccountManager.getProxyUsername(), objAccountManager.getProxyPassword());
+                    } else {
+                        viewerResponse = objPostFetchSource.fetchPageSourceWithoutProxyGET("http://iconosquare.com/viewer.php", "", "iconosquare.com");
+                    }
 //                System.out.println("response of viewer ::\n" + viewerResponse);
                     if ((viewerResponse != null) && (viewerResponse.length() > 0)) {
                         loggedInStatus = 1;
-                        logger2textArea.append("\nLogin to "+username+" Successfull");
+                        logger2textArea.append("\nLogin to " + username + " Successfull");
                         return loggedInStatus;
                     }
                 }
@@ -91,30 +120,47 @@ public class InstagramCrawler {
         }
         return loggedInStatus;
     }
-    public long sendMessagebyInconosquare(String username, String message) {
-        long messageSent = 0;
-        try {
-            String commentResponse;
-            commentResponse = objPostFetchSource.getSourceWithProxy("http://iconosquare.com/comments.php", "http://iconosquare.com/viewer.php", "iconosquare.com");
-            if ((commentResponse != null) && (commentResponse.length() > 0)) {
-                String messageResponse;
-                messageResponse = objPostFetchSource.getSourceWithProxy("http://iconosquare.com/messages.php", "http://iconosquare.com/comments.php", "iconosquare.com");
 
+    public long sendMessagebyInconosquare(String username, String message, AccountManager objAccountManager) {
+        long messageSent = 0;
+        int proxyIPLen = objAccountManager.getProxyIp().trim().length();
+        try {
+            String commentResponse = null;
+            if (proxyIPLen > 0) {
+                commentResponse = objPostFetchSource.fetchPageSourceWithProxyGET("http://iconosquare.com/comments.php", "http://iconosquare.com/viewer.php", "iconosquare.com", objAccountManager.getProxyIp(), objAccountManager.getProxyPort(), objAccountManager.getProxyUsername(), objAccountManager.getProxyPassword());
+            } else {
+                commentResponse = objPostFetchSource.fetchPageSourceWithoutProxyGET("http://iconosquare.com/comments.php", "http://iconosquare.com/viewer.php", "iconosquare.com");
+            }
+            if ((commentResponse != null) && (commentResponse.length() > 0)) {
+                String messageResponse = null;
+                if (proxyIPLen > 0) {
+                    messageResponse = objPostFetchSource.fetchPageSourceWithProxyGET("http://iconosquare.com/messages.php", "http://iconosquare.com/comments.php", "iconosquare.com", objAccountManager.getProxyIp(), objAccountManager.getProxyPort(), objAccountManager.getProxyUsername(), objAccountManager.getProxyPassword());
+                } else {
+                    messageResponse = objPostFetchSource.fetchPageSourceWithoutProxyGET("http://iconosquare.com/messages.php", "http://iconosquare.com/comments.php", "iconosquare.com");
+                }
                 if ((messageResponse != null) && (messageResponse.length() > 0)) {
-                    String newMessageResponse;
-                    newMessageResponse = objPostFetchSource.getSourceWithProxy("http://iconosquare.com/message_post_autocomplete.php", "http://iconosquare.com/messages.php", "iconosquare.com");
+                    String newMessageResponse = null;
+                    if (proxyIPLen > 0) {
+                        newMessageResponse = objPostFetchSource.fetchPageSourceWithProxyGET("http://iconosquare.com/message_post_autocomplete.php", "http://iconosquare.com/messages.php", "iconosquare.com", objAccountManager.getProxyIp(), objAccountManager.getProxyPort(), objAccountManager.getProxyUsername(), objAccountManager.getProxyPassword());
+                    } else {
+                        newMessageResponse = objPostFetchSource.fetchPageSourceWithoutProxyGET("http://iconosquare.com/message_post_autocomplete.php", "http://iconosquare.com/messages.php", "iconosquare.com");
+                    }
                     if ((newMessageResponse != null) && (newMessageResponse.length() > 0)) {
-                        String sendMessageResponse;
+                        String sendMessageResponse = "";
                         String url = "http://iconosquare.com/controller_ajax.php";
                         String referer = "http://iconosquare.com/messages.php";
                         String postdata = "action=save-dm&username=" + username + "&message=" + message;
                         String host = "iconosquare.com";
-                        sendMessageResponse = objPostFetchSource.fetchPageSourceWithProxyPost(url, postdata, referer, host);
+                        if (proxyIPLen > 0) {
+                            sendMessageResponse = objPostFetchSource.fetchPageSourceWithProxyPOST(url, postdata, referer, host, objAccountManager.getProxyIp(), objAccountManager.getProxyPort(), objAccountManager.getProxyUsername(), objAccountManager.getProxyPassword());
+                        } else {
+                            sendMessageResponse = objPostFetchSource.fetchPageSourceWithoutProxyPOST(url, postdata, referer, host);
+                        }
                         System.out.println("ContentLength::::\n" + sendMessageResponse);
                         if (sendMessageResponse.equals("1")) {
                             messageSent = 1;
-                            logger2textArea.append("\nMesage:"+message+" Sent to "+username);
-                            
+                            logger2textArea.append("\nMesage:" + message + " Sent to " + username+" by: "+objAccountManager.getUsername());
+
                         }
 
                     }
@@ -125,11 +171,17 @@ public class InstagramCrawler {
         return messageSent;
     }
 
-    public long followUserSendMessageUnfollowbyInconosquare(String username, String message) {
+    public long followUserSendMessageUnfollowbyInconosquare(String username, String message, AccountManager objAccountManager) {
         long followUserSendMessageUnfollow = 0;
+        int proxyIPLen = objAccountManager.getProxyIp().trim().length();
         try {
             String accessToken = "";
-            String viewResponseForToken = objPostFetchSource.getSourceWithProxy("http://iconosquare.com/viewer.php", "http://iconosquare.com/messages.php", "iconosquare.com");
+            String viewResponseForToken = null;
+            if (proxyIPLen>0) {
+                viewResponseForToken = objPostFetchSource.fetchPageSourceWithProxyGET("http://iconosquare.com/viewer.php", "http://iconosquare.com/messages.php", "iconosquare.com", objAccountManager.getProxyIp(), objAccountManager.getProxyPort(), objAccountManager.getProxyUsername(), objAccountManager.getProxyPassword());
+            } else {
+                viewResponseForToken = objPostFetchSource.fetchPageSourceWithoutProxyGET("http://iconosquare.com/viewer.php", "http://iconosquare.com/messages.php", "iconosquare.com");
+            }
 
             Document doc = Jsoup.parse(viewResponseForToken);
             Elements e = doc.select("div[id=accesstoken]");
@@ -138,7 +190,13 @@ public class InstagramCrawler {
             if (accessToken.length() > 0) {
                 String userID = "";
                 String searchurl = "http://iconosquare.com/rqig.php?e=/users/search&a=ico2&t=" + accessToken + "&q=" + username;
-                String jsonResponse = objPostFetchSource.getSourceWithProxy(searchurl, "http://iconosquare.com/viewer.php", "iconosquare.com");
+                
+                String jsonResponse = null;
+                if (proxyIPLen>0) {
+                    jsonResponse = objPostFetchSource.fetchPageSourceWithProxyGET(searchurl, "http://iconosquare.com/viewer.php", "iconosquare.com", objAccountManager.getProxyIp(), objAccountManager.getProxyPort(), objAccountManager.getProxyUsername(), objAccountManager.getProxyPassword());
+                }else{
+                    jsonResponse = objPostFetchSource.fetchPageSourceWithoutProxyGET(searchurl, "http://iconosquare.com/viewer.php", "iconosquare.com");
+                }
 
                 JSONObject a = new JSONObject(jsonResponse);
                 System.out.println("aaaa:::" + a);
@@ -157,20 +215,26 @@ public class InstagramCrawler {
 
                     String followurl = "http://iconosquare.com/controller_ajax.php";
                     String postData = "action=relationship&user_id=" + userID + "&relation=follow";
-                    String followResponse = objPostFetchSource.fetchPageSourceWithProxyPost(followurl, postData, "http://iconosquare.com/viewer.php", "iconosquare.com");
+                    String followResponse = null;
+                    if (proxyIPLen>0) {
+                        followResponse = objPostFetchSource.fetchPageSourceWithProxyPOST(followurl, postData, "http://iconosquare.com/viewer.php", "iconosquare.com",objAccountManager.getProxyIp(), objAccountManager.getProxyPort(), objAccountManager.getProxyUsername(), objAccountManager.getProxyPassword());
+                    } else {
+                        followResponse = objPostFetchSource.fetchPageSourceWithoutProxyPOST(followurl, postData, "http://iconosquare.com/viewer.php", "iconosquare.com");
+                    }
                     System.out.println("followResponse" + followResponse);
 
                     if (followResponse.equals("1")) {
                         System.out.println("Successfully following the user");
                         logger2textArea.append("\nSuccessfully following the user");
                         try {
-                            long messageSent = sendMessagebyInconosquare(username, message);
+                            long messageSent = sendMessagebyInconosquare(username, message, objAccountManager);
                             if (messageSent == 1) {
-                                logger2textArea.append("\nMesage:"+message+" Sent to "+username);
+//                                logger2textArea.append("\nMesage:" + message + " Sent to " + username);
 
                             } else {
                                 System.out.println("sorry Message not sent");
-                                sendMessagebyInconosquare(username, message);
+                                   logger2textArea.append("\nMesage:" + message + " Could not be Sent to " + username + "by "+objAccountManager.getUsername());
+                                sendMessagebyInconosquare(username, message, objAccountManager);
                             }
                         } catch (Exception e1) {
                             System.out.println("Error: Message not sent");
@@ -179,11 +243,17 @@ public class InstagramCrawler {
                             //Unfollow the user
                             String unfollowurl = "http://iconosquare.com/controller_ajax.php";
                             String unfollowPostData = "action=relationship&user_id=" + userID + "&relation=unfollow";
-                            String unfollowResponse = objPostFetchSource.fetchPageSourceWithProxyPost(unfollowurl, unfollowPostData, "http://iconosquare.com/viewer.php", "iconosquare.com");
+                            String unfollowResponse = null;
+                            if (proxyIPLen>0) {
+                                unfollowResponse = objPostFetchSource.fetchPageSourceWithProxyPOST(unfollowurl, unfollowPostData, "http://iconosquare.com/viewer.php", "iconosquare.com",objAccountManager.getProxyIp(), objAccountManager.getProxyPort(), objAccountManager.getProxyUsername(), objAccountManager.getProxyPassword());
+                            } else {
+                                unfollowResponse = objPostFetchSource.fetchPageSourceWithoutProxyPOST(unfollowurl, unfollowPostData, "http://iconosquare.com/viewer.php", "iconosquare.com");
+                            }
                             System.out.println("unfollowResponse" + unfollowResponse);
                             if (followResponse.equals("1")) {
                                 logger2textArea.append("\nSuccessfully un following the user");
-                        System.out.println("Successfully un following the user");}
+                                System.out.println("Successfully un following the user");
+                            }
 
                         } catch (Exception e1) {
                         }
@@ -200,5 +270,5 @@ public class InstagramCrawler {
         return followUserSendMessageUnfollow;
 
     }
-    
+
 }
