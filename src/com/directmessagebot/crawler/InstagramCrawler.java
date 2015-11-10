@@ -225,7 +225,7 @@ public class InstagramCrawler {
 
                     if (followResponse.equals("1")) {
                         System.out.println("Successfully following the user");
-                        logger2textArea.append("\nSuccessfully following the user");
+//                        logger2textArea.append("\nSuccessfully following the user");
                         try {
                             long messageSent = sendMessagebyInconosquare(username, message, objAccountManager);
                             if (messageSent == 1) {
@@ -233,8 +233,12 @@ public class InstagramCrawler {
 
                             } else {
                                 System.out.println("sorry Message not sent");
-                                   logger2textArea.append("\nMesage:" + message + " Could not be Sent to " + username + "by "+objAccountManager.getUsername());
-                                sendMessagebyInconosquare(username, message, objAccountManager);
+                                   
+                                if (messageSent == 1) {
+                                   messageSent=sendMessagebyInconosquare(username, message, objAccountManager);
+                                   } else {
+                                    logger2textArea.append("\nMesage:" + message + " Could not be Sent to " + username + " by "+objAccountManager.getUsername());
+                                }
                             }
                         } catch (Exception e1) {
                             System.out.println("Error: Message not sent");
@@ -251,7 +255,7 @@ public class InstagramCrawler {
                             }
                             System.out.println("unfollowResponse" + unfollowResponse);
                             if (followResponse.equals("1")) {
-                                logger2textArea.append("\nSuccessfully un following the user");
+//                                logger2textArea.append("\nSuccessfully un following the user");
                                 System.out.println("Successfully un following the user");
                             }
 

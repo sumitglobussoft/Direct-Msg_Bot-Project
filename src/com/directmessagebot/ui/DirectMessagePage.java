@@ -59,6 +59,8 @@ public class DirectMessagePage extends javax.swing.JFrame {
         importButton = new javax.swing.JButton();
         importLabel = new javax.swing.JLabel();
         messageTextArea = new java.awt.TextArea();
+        jLabel1 = new javax.swing.JLabel();
+        delaySpinner = new javax.swing.JSpinner();
         loggerLabel = new javax.swing.JLabel();
         button1 = new java.awt.Button();
         logger2textArea = new java.awt.TextArea();
@@ -106,6 +108,11 @@ public class DirectMessagePage extends javax.swing.JFrame {
         importLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         importLabel.setText("Import:");
 
+        jLabel1.setText("Delay:");
+
+        delaySpinner.setModel(new javax.swing.SpinnerNumberModel(Integer.valueOf(10), Integer.valueOf(5), null, Integer.valueOf(1)));
+        delaySpinner.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -119,37 +126,45 @@ public class DirectMessagePage extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(usernameTextField)
                     .addComponent(messageTextArea, javax.swing.GroupLayout.DEFAULT_SIZE, 198, Short.MAX_VALUE))
-                .addGap(22, 22, 22)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(orLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(importLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(10, 10, 10)
-                        .addComponent(importButton))
-                    .addComponent(StarrButton))
-                .addContainerGap(65, Short.MAX_VALUE))
+                        .addGap(27, 27, 27))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(delaySpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(25, 25, 25)))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(StarrButton)
+                    .addComponent(importButton))
+                .addContainerGap(46, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(StarrButton)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(usernameLabel)
+                    .addComponent(usernameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(orLabel)
+                    .addComponent(importButton)
+                    .addComponent(importLabel))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(usernameLabel)
-                            .addComponent(usernameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(orLabel)
-                            .addComponent(importButton)
-                            .addComponent(importLabel))
+                        .addGap(18, 18, 18)
+                        .addComponent(messageLabel))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(17, 17, 17)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(18, 18, 18)
-                                .addComponent(messageLabel))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(18, 18, 18)
-                                .addComponent(messageTextArea, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(StarrButton)
+                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(delaySpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(messageTextArea, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap())
         );
 
@@ -189,7 +204,7 @@ public class DirectMessagePage extends javax.swing.JFrame {
                 .addComponent(DIRECTMESSAGEBOTLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 21, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 22, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(button1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(loggerLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -228,11 +243,22 @@ public class DirectMessagePage extends javax.swing.JFrame {
 
     private void StarrButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_StarrButtonActionPerformed
         // TODO add your handling code here:
+        
+       
+        int delayValue = 0;
+        try {
+            delayValue = (int) delaySpinner.getValue();
+        } catch (Exception e) {
+            logger2textArea.append("\n Please add value in the dalay option. Else default 10secs will be selected");
+            delaySpinner.setValue(10);
+        }
+        System.out.println("a"+delayValue);
         if((usernameTextField.getText().trim().length()>0)&&(messageTextArea.getText().trim().length()>0)){
             StarrButton.setEnabled(false);
             importButton.setEnabled(false);
             usernameTextField.setEnabled(false);
             messageTextArea.setEnabled(false);
+            delaySpinner.setEnabled(false);
             listUsernameMessageForm.clear();
             UsernameMessageForm objUsernameMessageForm = new UsernameMessageForm();
             objUsernameMessageForm.setUsername(usernameTextField.getText().trim());
@@ -240,7 +266,7 @@ public class DirectMessagePage extends javax.swing.JFrame {
             listUsernameMessageForm.add(objUsernameMessageForm);
             
             ExecutorService executor = Executors.newFixedThreadPool(1);
-                Callable worker = new GetAllAccountsThread(listUsernameMessageForm, objAccountManagerDao);
+                Callable worker = new GetAllAccountsThread(listUsernameMessageForm, objAccountManagerDao, delayValue);
 
                 try {
                     executor.submit(worker);
@@ -254,8 +280,9 @@ public class DirectMessagePage extends javax.swing.JFrame {
             importButton.setEnabled(false);
             usernameTextField.setEnabled(false);
             messageTextArea.setEnabled(false);
+            delaySpinner.setEnabled(false);
              ExecutorService executor = Executors.newFixedThreadPool(1);
-                Callable worker = new GetAllAccountsThread(listUsernameMessageForm, objAccountManagerDao);
+                Callable worker = new GetAllAccountsThread(listUsernameMessageForm, objAccountManagerDao, delayValue);
 
                 try {
                     executor.submit(worker);
@@ -389,8 +416,10 @@ public class DirectMessagePage extends javax.swing.JFrame {
     private javax.swing.JLabel DIRECTMESSAGEBOTLabel;
     public static javax.swing.JButton StarrButton;
     private java.awt.Button button1;
+    public static javax.swing.JSpinner delaySpinner;
     public static javax.swing.JButton importButton;
     private javax.swing.JLabel importLabel;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     public static java.awt.TextArea logger2textArea;

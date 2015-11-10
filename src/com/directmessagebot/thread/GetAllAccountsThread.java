@@ -9,6 +9,7 @@ import com.directmessagebot.dao.AccountManagerDao;
 import com.directmessagebot.entity.AccountManager;
 import com.directmessagebot.form.UsernameMessageForm;
 import static com.directmessagebot.ui.DirectMessagePage.StarrButton;
+import static com.directmessagebot.ui.DirectMessagePage.delaySpinner;
 import static com.directmessagebot.ui.DirectMessagePage.importButton;
 import static com.directmessagebot.ui.DirectMessagePage.logger2textArea;
 import static com.directmessagebot.ui.DirectMessagePage.messageTextArea;
@@ -30,11 +31,13 @@ public class GetAllAccountsThread implements Callable<String> {
 
     List<UsernameMessageForm> objUsernameMessageForm = null;
     AccountManagerDao objAccountManagerDao = null;
+    int delay= 10;
 
-    public GetAllAccountsThread(List<UsernameMessageForm> objUsernameMessageForm, AccountManagerDao objAccountManagerDao) {
+    public GetAllAccountsThread(List<UsernameMessageForm> objUsernameMessageForm, AccountManagerDao objAccountManagerDao, int delay) {
 
         this.objUsernameMessageForm = objUsernameMessageForm;
         this.objAccountManagerDao = objAccountManagerDao;
+        this.delay = delay;
     }
 
     @Override
@@ -50,7 +53,7 @@ public class GetAllAccountsThread implements Callable<String> {
         for (AccountManager list1 : listAccount) {
             {
                 try {
-                    Callable worker = new AccountLoginThread(list1, objUsernameMessageForm, objAccountManagerDao);
+                    Callable worker = new AccountLoginThread(list1, objUsernameMessageForm, objAccountManagerDao, delay);
                     Future<String> future = executor.submit(worker);
                     list.add(future);
                 } catch (Exception exx) {
@@ -79,6 +82,7 @@ public class GetAllAccountsThread implements Callable<String> {
             importButton.setEnabled(true);
             usernameTextField.setEnabled(true);
             messageTextArea.setEnabled(true);
+            delaySpinner.setEnabled(true);
         return "done";
 
     }

@@ -28,9 +28,9 @@ public class Login {
     public static void main(String[] args) throws URISyntaxException, IOException, InterruptedException, Exception {
         Login objLogin = new Login();
         long messageSent = 0;
-        String messageRecepient = "harshali__malhotra";
+        String messageRecepient = "ideengang";
         String message = "now check";
-        int loggedInStatus = objLogin.LoginbyInconosquare("elliedavey", "LKJMNBHJ24");//susannahdocherty:qwerty123456789
+        int loggedInStatus = objLogin.LoginbyInconosquare("himanshumoriglobus", "globussoft");//susannahdocherty:qwerty123456789
         if (loggedInStatus == 1) {
             messageSent = objLogin.sendMessagebyInconosquare(messageRecepient, message);
         }

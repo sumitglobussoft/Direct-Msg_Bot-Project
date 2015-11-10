@@ -355,11 +355,17 @@ public class MainPage extends javax.swing.JFrame implements ActionListener {
 
     private void DirectMessageMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DirectMessageMenuItemActionPerformed
         // TODO add your handling code here:
-        if (a == null) {
-            a = new DirectMessagePage(objAccountManagerDao);
+        
+        List<AccountManager> listAccount = objAccountManagerDao.listAccountManager();
+        if (listAccount.size()>0) {
+            if (a == null) {
+                a = new DirectMessagePage(objAccountManagerDao);
+            }
+            a.setVisible(true);
+            a.setDefaultCloseOperation(DirectMessagePage.DISPOSE_ON_CLOSE);
+        } else {
+            loggerTextArea.append("\nPlease add account information to the Database");
         }
-        a.setVisible(true);
-        a.setDefaultCloseOperation(DirectMessagePage.DISPOSE_ON_CLOSE);
 
     }//GEN-LAST:event_DirectMessageMenuItemActionPerformed
 
@@ -377,18 +383,80 @@ public class MainPage extends javax.swing.JFrame implements ActionListener {
     private void SubmitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SubmitActionPerformed
         // TODO add your handling code here:
         AccountManager objAccountManager = new AccountManager();
+        int valid = 1;
+        int proxypresent = 0;
+         objAccountManager.setUsername("");
+         objAccountManager.setPassword("");
+         objAccountManager.setProxyIp("");
+         objAccountManager.setProxyPort("");
+         objAccountManager.setProxyUsername("");
+         objAccountManager.setProxyPassword("");
+         
         if (UsernameTextField.getText().trim().length() > 0) {
             objAccountManager.setUsername(UsernameTextField.getText());
         } else {
+            valid = 0;
             JOptionPane.showMessageDialog(null, "Please enter the username");
         }
-        objAccountManager.setPassword(PasswordTextField.getText());
-        objAccountManager.setProxyIp(ProxyIPTextField.getText());
-        objAccountManager.setProxyPort(ProxyPortTextField.getText());
-        objAccountManager.setProxyUsername(ProxyUsernameTextField.getText());
-        objAccountManager.setProxyPassword(ProxyPasswordTextField.getText());
+        if (PasswordTextField.getText().trim().length() > 0) {
+            objAccountManager.setPassword(PasswordTextField.getText());
+        } else {
+            valid = 0;
+            JOptionPane.showMessageDialog(null, "Please enter the password");
+        }
+        if ((ProxyIPTextField.getText().trim().length() > 0) && (ProxyPortTextField.getText().trim().length() > 0)) {
+            try {
+                proxypresent = 1;
+                int a=Integer.parseInt(ProxyPortTextField.getText().trim());
+                if ((a>=0)&&(a<=65535)) {
+                    
+                    objAccountManager.setProxyIp(ProxyIPTextField.getText());
+                    objAccountManager.setProxyPort(ProxyPortTextField.getText());
+                } else {
+                    objAccountManager.setProxyIp(ProxyIPTextField.getText());
+                    ProxyPortTextField.setText("");
+                     valid = 0;
+                    JOptionPane.showMessageDialog(null, "Proxy Port should be in the range of 0-65535");
+                }
+            } catch (Exception e) {
+                valid = 0;
+                ProxyPortTextField.setText("");
+            JOptionPane.showMessageDialog(null, "Proxy Port should be integer value");
+            }
+        } else if ((ProxyIPTextField.getText().trim().length() > 0) && (ProxyPortTextField.getText().trim().length() <= 0)) {
+            valid = 0;
+            JOptionPane.showMessageDialog(null, "Please enter the proxy port");
+        } else if ((ProxyIPTextField.getText().trim().length() <= 0) && (ProxyPortTextField.getText().trim().length() > 0)) {
+            valid = 0;
+            JOptionPane.showMessageDialog(null, "Please enter the proxy IP");
+        }
 
-        int insertstatus = objAccountManagerDao.insertAccountManager(objAccountManager);
+        if ((ProxyUsernameTextField.getText().trim().length() > 0) && (ProxyPasswordTextField.getText().trim().length() > 0)) {
+            if (proxypresent == 1) {
+                objAccountManager.setProxyUsername(ProxyUsernameTextField.getText());
+                objAccountManager.setProxyPassword(ProxyPasswordTextField.getText());
+            } else {
+                valid = 0;
+                JOptionPane.showMessageDialog(null, "Please enter the proxy IP and proxy port");
+            }
+
+        } else if ((ProxyUsernameTextField.getText().trim().length() > 0) && (ProxyPasswordTextField.getText().trim().length() <= 0)) {
+            valid = 0;
+            JOptionPane.showMessageDialog(null, "Please enter the Proxy Password");
+        } else if ((ProxyUsernameTextField.getText().trim().length() <= 0) && (ProxyPasswordTextField.getText().trim().length() > 0)) {
+            valid = 0;
+            JOptionPane.showMessageDialog(null, "Please enter the Proxy Username");
+        }
+
+         int insertstatus = 0;
+        if (valid == 1) {
+            insertstatus = objAccountManagerDao.insertAccountManager(objAccountManager);
+            System.out.println("insert to DB");
+        } else {
+            System.out.println("cant insert to DB");
+        }
+
+//        int insertstatus = objAccountManagerDao.insertAccountManager(objAccountManager);
         if (insertstatus == 1) {
             UsernameTextField.setText("");
             PasswordTextField.setText("");
@@ -507,8 +575,8 @@ public class MainPage extends javax.swing.JFrame implements ActionListener {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        List<AccountManager> list=objAccountManagerDao.listAccountManager();
-        if (list.size()>0) {
+        List<AccountManager> list = objAccountManagerDao.listAccountManager();
+        if (list.size() > 0) {
             for (AccountManager list1 : list) {
                 loggerTextArea.append("\nUsername::" + list1.getUsername());
                 loggerTextArea.append("\nPassword::" + list1.getPassword());
@@ -521,7 +589,7 @@ public class MainPage extends javax.swing.JFrame implements ActionListener {
         } else {
             loggerTextArea.append("\nDatabase is empty");
         }
-            
+
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
